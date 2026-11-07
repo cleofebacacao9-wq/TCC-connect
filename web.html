@@ -1,0 +1,772 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TCC CONNECT</title>
+
+<style>
+:root {
+  --blue: #123f78;
+  --blue2: #1d65ad;
+  --light: #edf5ff;
+  --white: #fff;
+  --text: #203047;
+  --muted: #718096;
+  --green: #168653;
+  --red: #c43b45;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f3f7fc;
+  color: var(--text);
+}
+header {
+  background: var(--blue);
+  color: white;
+  padding: 18px 5%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.logo {
+  width: 65px;
+  height: 65px;
+  object-fit: contain;
+  background: white;
+  border-radius: 50%;
+  padding: 5px;
+}
+.header-title { text-align: center; flex: 1; }
+.header-title h1 { margin: 0; font-size: 23px; }
+.header-title p { margin: 5px 0 0; font-size: 12px; }
+main { width: min(1050px, 92%); margin: 28px auto; }
+.hero {
+  text-align: center;
+  padding: 35px 15px;
+  background: linear-gradient(135deg, #123f78, #2877c5);
+  color: white;
+  border-radius: 18px;
+  margin-bottom: 22px;
+}
+.hero h2 { font-size: 30px; margin: 0 0 10px; }
+.hero p { margin: 0; }
+.card {
+  background: white;
+  border-radius: 15px;
+  padding: 24px;
+  box-shadow: 0 4px 18px #183b6410;
+  margin-bottom: 20px;
+}
+h2, h3 { color: var(--blue); }
+input, select {
+  width: 100%;
+  padding: 12px;
+  margin: 7px 0 14px;
+  border: 1px solid #d4deea;
+  border-radius: 8px;
+  font-size: 14px;
+}
+label { font-size: 13px; font-weight: bold; }
+button {
+  border: 0;
+  border-radius: 8px;
+  padding: 12px 17px;
+  background: var(--blue2);
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  margin: 4px 3px 4px 0;
+}
+button:hover { opacity: .9; }
+button.secondary { background: #e5eef9; color: var(--blue); }
+button.danger { background: var(--red); }
+button.success { background: var(--green); }
+button:disabled { opacity: .45; cursor: not-allowed; }
+.tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 15px; }
+.tabs button { flex: 1; min-width: 120px; }
+.hidden { display: none !important; }
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 14px;
+}
+.stat {
+  background: var(--light);
+  padding: 18px;
+  border-radius: 12px;
+}
+.stat strong { display: block; font-size: 26px; color: var(--blue); }
+.stat span { color: var(--muted); font-size: 13px; }
+.status {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  background: #e5f7ed;
+  color: var(--green);
+}
+.notice {
+  padding: 12px;
+  background: #fff5dc;
+  color: #775414;
+  border-radius: 8px;
+  font-size: 13px;
+  margin: 12px 0;
+}
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th, td {
+  text-align: left;
+  padding: 11px 8px;
+  border-bottom: 1px solid #e8edf4;
+}
+th { color: var(--blue); }
+.table-wrap { overflow-x: auto; }
+footer { text-align: center; padding: 25px; color: var(--muted); font-size: 12px; }
+#message { margin: 10px 0; font-size: 13px; }
+</style>
+</head>
+
+<body>
+
+<header>
+  <img src="left.png.png" class="logo" alt="TCC logo left">
+  <div class="header-title">
+    <h1>TCC CONNECT</h1>
+    <p>Faculty Wi-Fi Authentication and Attendance System</p>
+  </div>
+  <img src="right.png.png" class="logo" alt="TCC logo right">
+</header>
+
+<main>
+
+<section id="home">
+  <div class="hero">
+    <h2>Secure Network. Connected Campus.</h2>
+    <p>A smarter way to connect and manage faculty access.</p>
+  </div>
+
+  <div class="card">
+    <div class="tabs">
+      <button onclick="showTab('register')">Teacher Registration</button>
+      <button class="secondary" onclick="showTab('teacherLogin')">Teacher Login</button>
+      <button class="secondary" onclick="showTab('adminLogin')">Admin Login</button>
+    </div>
+
+    <div id="register">
+      <h2>Teacher Registration</h2>
+      <form onsubmit="registerTeacher(event)">
+        <label>Full Name</label>
+        <input id="regName" required placeholder="Enter your full name">
+
+        <label>Teacher ID Number</label>
+        <input id="regId" required placeholder="Enter your teacher ID">
+
+        <label>Course / Department</label>
+        <input id="regDept" required placeholder="Enter your department">
+
+        <label>Password</label>
+        <input id="regPassword" type="password" required minlength="6" placeholder="Create a password">
+
+        <label>Confirm Password</label>
+        <input id="regConfirm" type="password" required placeholder="Confirm your password">
+
+        <button type="submit">Register and Continue</button>
+      </form>
+    </div>
+
+    <div id="teacherLogin" class="hidden">
+      <h2>Teacher Login</h2>
+      <form onsubmit="teacherLogin(event)">
+        <label>Teacher ID Number</label>
+        <input id="loginId" required placeholder="Enter your teacher ID">
+        <label>Password</label>
+        <input id="loginPassword" type="password" required placeholder="Enter your password">
+        <button type="submit">Login</button>
+      </form>
+    </div>
+
+    <div id="adminLogin" class="hidden">
+      <h2>Admin Login</h2>
+      <form onsubmit="adminLogin(event)">
+        <label>Admin Username</label>
+        <input id="adminUsername" required placeholder="Enter username">
+        <label>Password</label>
+        <input id="adminPassword" type="password" required placeholder="Enter password">
+        <button type="submit">Admin Login</button>
+      </form>
+
+      <p id="firstAdminNote" class="notice hidden">
+        No admin account exists yet. Create the first admin account below.
+      </p>
+
+      <button class="secondary" onclick="showAdminSetup()">Set Up First Admin</button>
+
+      <div id="adminSetup" class="hidden">
+        <h3>First Admin Setup</h3>
+        <form onsubmit="createFirstAdmin(event)">
+          <label>Setup Code (demo only)</label>
+          <input id="setupCode" required placeholder="Enter setup code">
+          <label>Admin Username</label>
+          <input id="firstUsername" required>
+          <label>Password</label>
+          <input id="firstPassword" type="password" required minlength="6">
+          <label>Confirm Password</label>
+          <input id="firstConfirm" type="password" required>
+          <button type="submit">Create First Admin</button>
+        </form>
+      </div>
+    </div>
+
+    <div id="message"></div>
+  </div>
+</section>
+
+<section id="teacherDashboard" class="hidden">
+  <div class="card">
+    <h2>Teacher Dashboard</h2>
+    <p>Welcome, <strong id="teacherName"></strong>!</p>
+    <p>Teacher ID: <span id="teacherId"></span></p>
+    <p>Department: <span id="teacherDept"></span></p>
+    <span class="status">Website session active</span>
+  </div>
+
+  <div class="grid">
+    <div class="stat">
+      <strong id="wifiStatus">Not verified</strong>
+      <span>Actual Wi-Fi connection</span>
+    </div>
+    <div class="stat">
+      <strong id="speedStatus">Not available</strong>
+      <span>Download / Upload Mbps</span>
+    </div>
+  </div>
+
+  <div class="notice">
+    Wi-Fi status and Mbps monitoring are not connected to a router yet.
+    A website login does not prove that you are connected to the faculty Wi-Fi.
+  </div>
+
+  <div class="card">
+    <h3>Attendance</h3>
+    <p>Today's date: <strong id="todayDate"></strong></p>
+    <p>Time In: <strong id="timeInDisplay">Not recorded</strong></p>
+    <p>Time Out: <strong id="timeOutDisplay">Not recorded</strong></p>
+    <button class="success" id="timeInBtn" onclick="timeIn()">TIME IN</button>
+    <button class="danger" id="timeOutBtn" onclick="timeOut()">TIME OUT</button>
+    <p id="attendanceMessage"></p>
+  </div>
+
+  <div class="card">
+    <h3>My Attendance History</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Date</th><th>Time In</th><th>Time Out</th></tr></thead>
+        <tbody id="myAttendance"></tbody>
+      </table>
+    </div>
+  </div>
+  <button class="danger" onclick="logout()">Logout</button>
+</section>
+
+<section id="adminDashboard" class="hidden">
+  <div class="card">
+    <h2>Admin Dashboard</h2>
+    <p>Welcome, <strong id="currentAdmin"></strong>!</p>
+    <div class="grid">
+      <div class="stat"><strong id="teacherCount">0</strong><span>Registered Teachers</span></div>
+      <div class="stat"><strong id="presentCount">0</strong><span>Present Today</span></div>
+      <div class="stat"><strong id="absentCount">0</strong><span>No Time In Recorded</span></div>
+      <div class="stat"><strong id="sessionCount">0</strong><span>Website Sessions</span></div>
+    </div>
+  </div>
+
+  <div class="notice">
+    Demo limitation: "No Time In Recorded" is not an official absent status.
+    Actual absence requires the official faculty roster, work schedule, and attendance cutoff.
+    Website sessions are not the same as connected Wi-Fi devices.
+  </div>
+
+  <div class="card">
+    <h3>Registered Teachers</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Name</th><th>Teacher ID</th><th>Department</th><th>Today's Attendance</th></tr></thead>
+        <tbody id="teacherTable"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Website Login Sessions</h3>
+    <p class="notice">These are users logged into this demo website, not a live list of devices connected to the Wi-Fi router.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Teacher</th><th>Teacher ID</th><th>Login Time</th><th>Action</th></tr></thead>
+        <tbody id="sessionTable"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Attendance Records</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Teacher</th><th>Date</th><th>Time In</th><th>Time Out</th></tr></thead>
+        <tbody id="adminAttendance"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Manage Admin Accounts</h3>
+    <p id="adminLimit"></p>
+    <form onsubmit="addAdmin(event)">
+      <label>New Admin Username</label>
+      <input id="newAdminUsername" required>
+      <label>New Admin Password</label>
+      <input id="newAdminPassword" type="password" required minlength="6">
+      <button type="submit">Add Admin</button>
+    </form>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Admin Username</th></tr></thead>
+        <tbody id="adminTable"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <button class="danger" onclick="logout()">Logout</button>
+</section>
+
+</main>
+
+<footer>
+  TCC CONNECT | Secure Network. Connected Campus.
+</footer>
+
+<script>
+const STORAGE = {
+  teachers: "tcc_teachers",
+  admins: "tcc_admins",
+  attendance: "tcc_attendance",
+  sessions: "tcc_sessions"
+};
+
+// DEMO ONLY: This setup code is visible in the front-end source.
+// Replace it with a secure, server-side setup process before deployment.
+const DEMO_SETUP_CODE = "TCC-ADMIN-2026";
+
+function read(key) {
+  return JSON.parse(localStorage.getItem(key) || "[]");
+}
+
+function save(key, value) {
+  localStorage.setItem(key, JSON.stringify(value));
+}
+
+function today() {
+  return new Date().toLocaleDateString("en-CA");
+}
+
+function currentTime() {
+  return new Date().toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit"
+  });
+}
+
+function showMessage(message, color = "#c43b45") {
+  const el = document.getElementById("message");
+  el.style.color = color;
+  el.textContent = message;
+}
+
+function showTab(tab) {
+  ["register", "teacherLogin", "adminLogin"].forEach(id => {
+    document.getElementById(id).classList.add("hidden");
+  });
+  document.getElementById(tab).classList.remove("hidden");
+  showMessage("");
+}
+
+function showAdminSetup() {
+  document.getElementById("adminSetup").classList.toggle("hidden");
+}
+
+function hideAllSections() {
+  ["home", "teacherDashboard", "adminDashboard"].forEach(id => {
+    document.getElementById(id).classList.add("hidden");
+  });
+}
+
+function openTeacherDashboard(teacher) {
+  hideAllSections();
+  document.getElementById("teacherDashboard").classList.remove("hidden");
+
+  document.getElementById("teacherName").textContent = teacher.name;
+  document.getElementById("teacherId").textContent = teacher.id;
+  document.getElementById("teacherDept").textContent = teacher.department;
+  document.getElementById("todayDate").textContent = today();
+
+  updateTeacherAttendance(teacher.id);
+}
+
+function getTodayRecord(teacherId) {
+  return read(STORAGE.attendance).find(record =>
+    record.teacherId === teacherId && record.date === today()
+  );
+}
+
+function updateTeacherAttendance(teacherId) {
+  const record = getTodayRecord(teacherId);
+
+  document.getElementById("timeInDisplay").textContent =
+    record?.timeIn || "Not recorded";
+
+  document.getElementById("timeOutDisplay").textContent =
+    record?.timeOut || "Not recorded";
+
+  document.getElementById("timeInBtn").disabled = !!record?.timeIn;
+  document.getElementById("timeOutBtn").disabled =
+    !record?.timeIn || !!record?.timeOut;
+
+  const history = read(STORAGE.attendance)
+    .filter(r => r.teacherId === teacherId)
+    .sort((a, b) => b.date.localeCompare(a.date));
+
+  document.getElementById("myAttendance").innerHTML =
+    history.map(r => `
+      <tr>
+        <td>${escapeHTML(r.date)}</td>
+        <td>${escapeHTML(r.timeIn || "-")}</td>
+        <td>${escapeHTML(r.timeOut || "-")}</td>
+      </tr>
+    `).join("") || "<tr><td colspan='3'>No attendance records yet.</td></tr>";
+}
+
+function timeIn() {
+  const teacher = JSON.parse(sessionStorage.getItem("currentTeacher") || "null");
+  if (!teacher) return;
+
+  let records = read(STORAGE.attendance);
+  let record = records.find(r =>
+    r.teacherId === teacher.id && r.date === today()
+  );
+
+  if (record?.timeIn) {
+    document.getElementById("attendanceMessage").textContent =
+      "You already recorded your Time In today.";
+    return;
+  }
+
+  if (!record) {
+    record = {
+      teacherId: teacher.id,
+      date: today(),
+      timeIn: currentTime(),
+      timeOut: ""
+    };
+    records.push(record);
+  } else {
+    record.timeIn = currentTime();
+  }
+
+  save(STORAGE.attendance, records);
+  document.getElementById("attendanceMessage").textContent =
+    "Time In recorded in this demo.";
+  updateTeacherAttendance(teacher.id);
+}
+
+function timeOut() {
+  const teacher = JSON.parse(sessionStorage.getItem("currentTeacher") || "null");
+  if (!teacher) return;
+
+  let records = read(STORAGE.attendance);
+  const record = records.find(r =>
+    r.teacherId === teacher.id && r.date === today()
+  );
+
+  if (!record?.timeIn || record.timeOut) {
+    document.getElementById("attendanceMessage").textContent =
+      "Please check your Time In record first.";
+    return;
+  }
+
+  record.timeOut = currentTime();
+  save(STORAGE.attendance, records);
+
+  document.getElementById("attendanceMessage").textContent =
+    "Time Out recorded in this demo.";
+  updateTeacherAttendance(teacher.id);
+}
+
+function registerTeacher(event) {
+  event.preventDefault();
+
+  const name = document.getElementById("regName").value.trim();
+  const id = document.getElementById("regId").value.trim();
+  const department = document.getElementById("regDept").value.trim();
+  const password = document.getElementById("regPassword").value;
+  const confirm = document.getElementById("regConfirm").value;
+
+  if (password !== confirm) {
+    showMessage("Passwords do not match.");
+    return;
+  }
+
+  const teachers = read(STORAGE.teachers);
+
+  if (teachers.some(t => t.id.toLowerCase() === id.toLowerCase())) {
+    showMessage("This Teacher ID is already registered.");
+    return;
+  }
+
+  const teacher = {
+    name,
+    id,
+    department,
+    password,
+    registeredAt: new Date().toISOString()
+  };
+
+  teachers.push(teacher);
+  save(STORAGE.teachers, teachers);
+
+  sessionStorage.setItem("currentTeacher", JSON.stringify(teacher));
+  addSession(teacher);
+  openTeacherDashboard(teacher);
+}
+
+function teacherLogin(event) {
+  event.preventDefault();
+
+  const id = document.getElementById("loginId").value.trim();
+  const password = document.getElementById("loginPassword").value;
+
+  const teacher = read(STORAGE.teachers).find(t =>
+    t.id.toLowerCase() === id.toLowerCase() && t.password === password
+  );
+
+  if (!teacher) {
+    showMessage("Invalid Teacher ID or password.");
+    return;
+  }
+
+  sessionStorage.setItem("currentTeacher", JSON.stringify(teacher));
+  addSession(teacher);
+  openTeacherDashboard(teacher);
+}
+
+function addSession(teacher) {
+  let sessions = read(STORAGE.sessions);
+  const sessionId = sessionStorage.getItem("tcc_session_id") ||
+    (crypto.randomUUID ? crypto.randomUUID() : String(Date.now()));
+
+  sessionStorage.setItem("tcc_session_id", sessionId);
+
+  sessions = sessions.filter(s => s.sessionId !== sessionId);
+  sessions.push({
+    sessionId,
+    teacherId: teacher.id,
+    name: teacher.name,
+    loginTime: new Date().toLocaleString()
+  });
+
+  save(STORAGE.sessions, sessions);
+}
+
+function adminLogin(event) {
+  event.preventDefault();
+
+  const username = document.getElementById("adminUsername").value.trim();
+  const password = document.getElementById("adminPassword").value;
+
+  const admin = read(STORAGE.admins).find(a =>
+    a.username.toLowerCase() === username.toLowerCase() &&
+    a.password === password
+  );
+
+  if (!admin) {
+    showMessage("Invalid admin username or password.");
+    return;
+  }
+
+  sessionStorage.setItem("currentAdmin", admin.username);
+  openAdminDashboard();
+}
+
+function createFirstAdmin(event) {
+  event.preventDefault();
+
+  if (read(STORAGE.admins).length > 0) {
+    showMessage("An admin account already exists.");
+    return;
+  }
+
+  const code = document.getElementById("setupCode").value;
+  const username = document.getElementById("firstUsername").value.trim();
+  const password = document.getElementById("firstPassword").value;
+  const confirm = document.getElementById("firstConfirm").value;
+
+  if (code !== DEMO_SETUP_CODE) {
+    showMessage("Incorrect demo setup code.");
+    return;
+  }
+
+  if (password !== confirm) {
+    showMessage("Passwords do not match.");
+    return;
+  }
+
+  save(STORAGE.admins, [{ username, password }]);
+  sessionStorage.setItem("currentAdmin", username);
+  openAdminDashboard();
+}
+
+function addAdmin(event) {
+  event.preventDefault();
+
+  let admins = read(STORAGE.admins);
+  const username = document.getElementById("newAdminUsername").value.trim();
+  const password = document.getElementById("newAdminPassword").value;
+
+  if (admins.length >= 3) {
+    alert("Maximum of 3 admin accounts reached.");
+    return;
+  }
+
+  if (admins.some(a => a.username.toLowerCase() === username.toLowerCase())) {
+    alert("That admin username already exists.");
+    return;
+  }
+
+  admins.push({ username, password });
+  save(STORAGE.admins, admins);
+
+  document.getElementById("newAdminUsername").value = "";
+  document.getElementById("newAdminPassword").value = "";
+  renderAdminDashboard();
+  alert("Admin account added.");
+}
+
+function openAdminDashboard() {
+  hideAllSections();
+  document.getElementById("adminDashboard").classList.remove("hidden");
+  document.getElementById("currentAdmin").textContent =
+    sessionStorage.getItem("currentAdmin") || "Admin";
+  renderAdminDashboard();
+}
+
+function renderAdminDashboard() {
+  const teachers = read(STORAGE.teachers);
+  const records = read(STORAGE.attendance).filter(r => r.date === today());
+  const sessions = read(STORAGE.sessions);
+
+  const presentIds = records.filter(r => r.timeIn).map(r => r.teacherId);
+  const present = teachers.filter(t => presentIds.includes(t.id)).length;
+  const noTimeIn = teachers.length - present;
+
+  document.getElementById("teacherCount").textContent = teachers.length;
+  document.getElementById("presentCount").textContent = present;
+  document.getElementById("absentCount").textContent = noTimeIn;
+  document.getElementById("sessionCount").textContent = sessions.length;
+
+  document.getElementById("teacherTable").innerHTML =
+    teachers.map(t => {
+      const r = records.find(x => x.teacherId === t.id);
+      return `<tr>
+        <td>${escapeHTML(t.name)}</td>
+        <td>${escapeHTML(t.id)}</td>
+        <td>${escapeHTML(t.department)}</td>
+        <td>${r?.timeIn ? "Time In: " + escapeHTML(r.timeIn) : "No Time In"}</td>
+      </tr>`;
+    }).join("") || "<tr><td colspan='4'>No registered teachers.</td></tr>";
+
+  document.getElementById("sessionTable").innerHTML =
+    sessions.map(s => `<tr>
+      <td>${escapeHTML(s.name)}</td>
+      <td>${escapeHTML(s.teacherId)}</td>
+      <td>${escapeHTML(s.loginTime)}</td>
+      <td><button class="danger" onclick="endSession('${escapeHTML(s.sessionId)}')">End Demo Session</button></td>
+    </tr>`).join("") || "<tr><td colspan='4'>No active website sessions.</td></tr>";
+
+  const allRecords = read(STORAGE.attendance).sort((a, b) =>
+    b.date.localeCompare(a.date)
+  );
+
+  document.getElementById("adminAttendance").innerHTML =
+    allRecords.map(r => {
+      const teacher = teachers.find(t => t.id === r.teacherId);
+      return `<tr>
+        <td>${escapeHTML(teacher?.name || r.teacherId)}</td>
+        <td>${escapeHTML(r.date)}</td>
+        <td>${escapeHTML(r.timeIn || "-")}</td>
+        <td>${escapeHTML(r.timeOut || "-")}</td>
+      </tr>`;
+    }).join("") || "<tr><td colspan='4'>No attendance records.</td></tr>";
+
+  const admins = read(STORAGE.admins);
+  document.getElementById("adminLimit").textContent =
+    `Admin accounts: ${admins.length} / 3`;
+
+  document.getElementById("adminTable").innerHTML =
+    admins.map(a => `<tr><td>${escapeHTML(a.username)}</td></tr>`).join("");
+}
+
+function endSession(sessionId) {
+  const sessions = read(STORAGE.sessions)
+    .filter(s => s.sessionId !== sessionId);
+  save(STORAGE.sessions, sessions);
+  renderAdminDashboard();
+}
+
+function logout() {
+  const sessionId = sessionStorage.getItem("tcc_session_id");
+
+  if (sessionId) {
+    save(STORAGE.sessions, read(STORAGE.sessions)
+      .filter(s => s.sessionId !== sessionId));
+  }
+
+  sessionStorage.removeItem("currentTeacher");
+  sessionStorage.removeItem("currentAdmin");
+  sessionStorage.removeItem("tcc_session_id");
+
+  hideAllSections();
+  document.getElementById("home").classList.remove("hidden");
+  showTab("register");
+}
+
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#039;"
+  })[char]);
+}
+
+// Display first-admin setup message when no admin exists.
+if (read(STORAGE.admins).length === 0) {
+  document.getElementById("firstAdminNote").classList.remove("hidden");
+}
+
+// Restore current browser session after refresh.
+const savedTeacher = JSON.parse(sessionStorage.getItem("currentTeacher") || "null");
+const savedAdmin = sessionStorage.getItem("currentAdmin");
+
+if (savedTeacher) {
+  openTeacherDashboard(savedTeacher);
+} else if (savedAdmin) {
+  openAdminDashboard();
+}
+</script>
+
+</body>
+</html>
